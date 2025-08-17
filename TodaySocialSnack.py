@@ -136,8 +136,70 @@ def _format_when_display(ts: _pd.Timestamp) -> str:
 
 
 def main() -> None:
-    _st.set_page_config(page_title="사회 뉴스레터", layout="wide")
-    _st.title("사회 뉴스레터")
+    _st.set_page_config(page_title="오늘의 사회 스낵", layout="wide")
+    # 라이트모드 CSS 강제 적용
+    _st.markdown(
+        """
+        <style>
+        body, .stApp, [data-testid='stAppViewContainer'], [data-testid='stSidebar'], [data-testid='stHeader'],
+        h1, h2, h3, h4, h5, h6, p, div, span, label, input, textarea, .markdown-text-container, .stMarkdown, .stText, .stCaption,
+        .css-1v0mbdj, .css-10trblm, .css-1c7y2kd, .css-1d391kg, .css-1dp5vir, .css-1v3fvcr, .css-1y4p8pa, .css-1w2yozk {
+            background-color: #ffffff !important;
+            color: #262730 !important;
+        }
+        /* 버튼 내부 배경만 투명, 바깥쪽(테두리 등)은 유지 */
+        .stButton>button {
+            background-color: transparent !important;
+            color: #222 !important;
+            box-shadow: 0 0 0 4px #2c2c36 !important;
+            border: none !important;
+            padding: 0.5em 1em !important;
+        }
+        /* 드롭다운 옵션 hover 시 검은 배경, 나머지는 투명하게 */
+        .stMultiSelect .css-1n76uvr, .stMultiSelect .css-1n76uvr:hover {
+            background-color: transparent !important;
+        }
+        .stMultiSelect .css-1n76uvr[aria-selected="true"],
+        .stMultiSelect .css-1n76uvr:hover {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    # 라이트모드 CSS 강제 적용
+    _st.markdown(
+        """
+        <style>
+        body, .stApp, [data-testid='stAppViewContainer'], [data-testid='stSidebar'], [data-testid='stHeader'],
+        h1, h2, h3, h4, h5, h6, p, div, span, label, input, textarea, .markdown-text-container, .stMarkdown, .stText, .stCaption,
+        .css-1v0mbdj, .css-10trblm, .css-1c7y2kd, .css-1d391kg, .css-1dp5vir, .css-1v3fvcr, .css-1y4p8pa, .css-1w2yozk {
+            background-color: #ffffff !important;
+            color: #262730 !important;
+        }
+        /* 버튼 내부 배경만 투명, 바깥쪽(테두리 등)은 유지 */
+        .stButton>button {
+            background-color: transparent !important;
+            color: #222 !important;
+            box-shadow: 0 0 0 4px #2c2c36 !important;
+            border: none !important;
+            padding: 0.5em 1em !important;
+        }
+        /* 드롭다운 옵션 hover 시 검은 배경, 기본 흰 배경 제거 */
+        .stMultiSelect .css-1n76uvr, .stMultiSelect .css-1n76uvr:hover {
+            background-color: transparent !important;
+        }
+        .stMultiSelect .css-1n76uvr[aria-selected="true"],
+        .stMultiSelect .css-1n76uvr:hover {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    _st.title("오늘의 사회 스낵")
 
     data = load_sheet()
     if data.empty:
@@ -149,7 +211,7 @@ def main() -> None:
     topics = sorted(t for t in data["토픽 분류"].dropna().unique().tolist() if isinstance(t, str))
     selected_topics = _st.sidebar.multiselect("토픽 분류", options=topics, default=[])
 
-    if data["날짜"].notna().any():
+    if data["날짜"].notnull().any():
         min_date = data["날짜"].min()
         max_date = data["날짜"].max()
         # Timestamp → date
