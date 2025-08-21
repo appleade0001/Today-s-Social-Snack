@@ -232,15 +232,7 @@ def main() -> None:
     else:
         date_range = tuple(selected_range) if selected_range else (min_date, max_date)
 
-    # 구독 버튼을 날짜 범위 바로 아래에 사이드바에 배치
-    if NEWSLETTER_FORM_URL and NEWSLETTER_FORM_URL.startswith("http"):
-        if _st.sidebar.button("뉴스레터 구독하기"):
-            _st.sidebar.markdown(
-                f"<meta http-equiv='refresh' content='0;url={NEWSLETTER_FORM_URL}'>",
-                unsafe_allow_html=True,
-            )
-    else:
-        _st.sidebar.info("구독 폼 URL이 설정되지 않았습니다. `NEWSLETTER_FORM_URL`을 실제 구글폼 링크로 바꿔주세요.")
+    # 뉴스레터 구독 버튼 제거됨
 
     filtered_data = filter_data(data, selected_topics, date_range)
 
